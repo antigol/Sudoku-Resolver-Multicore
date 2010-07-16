@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>257</width>
+    <width>321</width>
     <height>222</height>
    </rect>
   </property>
@@ -23,7 +23,7 @@
      <item>
       <widget class="QPushButton" name="pushButton_save">
        <property name="text">
-        <string>Sauvegarder</string>
+        <string>Save</string>
        </property>
       </widget>
      </item>
@@ -33,7 +33,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Reprendre</string>
+        <string>Resume</string>
        </property>
       </widget>
      </item>
@@ -61,7 +61,7 @@
    <item>
     <widget class="QPushButton" name="pushButton_reset">
      <property name="text">
-      <string>Vider la grille</string>
+      <string>Empty the grid array</string>
      </property>
     </widget>
    </item>
@@ -105,7 +105,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Chercher</string>
+        <string>Search</string>
        </property>
       </widget>
      </item>
