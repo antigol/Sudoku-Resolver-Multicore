@@ -10,7 +10,7 @@ TEMPLATE = app
 DEPENDPATH += .
 INCLUDEPATH += .
 
-TARGET = srm
+TARGET = Sudoku-Resolver-Multicore
 
 # Input
 HEADERS += src/biglist.h \
@@ -21,7 +21,11 @@ HEADERS += src/biglist.h \
     src/widget.h \
     src/sudokucasewidget.h \
     src/sudokutables.h
+
 FORMS += src/widget.ui
+
+RESOURCES += rsc/rsc.qrc
+
 SOURCES += src/main.cpp \
     src/sudokuthread.cpp \
     src/sudokuwidget.cpp \
@@ -30,14 +34,5 @@ SOURCES += src/main.cpp \
     src/sudokucasewidget.cpp \
     src/sumolib.cpp \
     src/sudokutables.cpp
-win32 {
-	RC_FILE += resources/file.rc
-}
-RESOURCES += resources/rsc.qrc
-TRANSLATIONS = resources/translation/srm_en.ts
 
-
-OBJECTS_DIR = build
-MOC_DIR = build
-UI_DIR = build
-RCC_DIR = build
+win32::RC_FILE += rsc/file.rc
