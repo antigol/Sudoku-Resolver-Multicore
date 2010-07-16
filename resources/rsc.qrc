@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/rsc">
-        <file alias="green.png">Matrix-64x64.png</file>
-        <file alias="red.png">Red-64x64.png</file>
-    </qresource>
-</RCC>
