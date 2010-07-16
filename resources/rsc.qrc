@@ -3,7 +3,4 @@
         <file alias="green.png">Matrix-64x64.png</file>
         <file alias="red.png">Red-64x64.png</file>
     </qresource>
-    <qresource prefix="/ts">
-        <file alias="srm_en.qm">translation/srm_en.qm</file>
-    </qresource>
 </RCC>
