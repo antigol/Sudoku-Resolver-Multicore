@@ -106,11 +106,9 @@ QList<SumoG> ThreadHelper::decomposer(SumoG jeu)
     QList<SumoG> list;
     int maximum(0);
     int id(0);
-    while(jeu.cherche()); // ajout
-    for(int i(0); i<81; ++i)
-    {
-        if(jeu[i].np() != 1 && jeu[i].np() > maximum)
-        {
+    while (jeu.cherche()) ; // ajout
+    for (int i(0); i<81; ++i) {
+        if (jeu[i].np() != 1 && jeu[i].np() > maximum) {
             maximum = jeu[i].np();
             id = i;
         }
@@ -118,16 +116,13 @@ QList<SumoG> ThreadHelper::decomposer(SumoG jeu)
 
     SumoG save(jeu);
 
-    for(int chiffre=UN; chiffre<TOUS; chiffre<<=1)
-    {
-        if(jeu[id].list() & chiffre)
-        {
+    for (int chiffre=UN; chiffre<TOUS; chiffre<<=1) {
+        if(jeu[id].list() & chiffre) {
             jeu[id].set(chiffre);
 
-            while(jeu.cherche()) ;
+            while (jeu.cherche()) ;
 
-            if(jeu.verification())
-            {
+            if (jeu.verification()) {
                 list.append(jeu);
             }
             jeu = save;
@@ -140,10 +135,9 @@ QList<SumoG> ThreadHelper::decomposer(SumoG jeu)
 QList<SumoG> ThreadHelper::decomposerEn(SumoG jeu, int min)
 {
     QList<SumoG> list(decomposer(jeu));
-    if(list.size() <= 1) return list;
+    if (list.size() <= 1) return list;
 
-    while(list.size() < min)
-    {
+    while (list.size() < min) {
         QList<QList<SumoG> > lists;
         for(int i(0); i<list.size(); ++i)
             lists.append(decomposer(list[i]));
