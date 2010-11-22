@@ -24,7 +24,7 @@ class SumoC {
 public:
   SumoC();
   int rmv(int f);
-  void set(int f) ;
+  void set(int f);
   int np() const { return _np; }
   int list() const { return _p; }
   SumoC& operator= (const SumoC& c);

@@ -54,18 +54,19 @@ void Widget::on_pushButton_search_clicked()
 
         qApp->processEvents();
 
-        threadHelper.start(jeu);
+		showTimer->setInterval(900);
+		showTimer->start();
+		if (_benchmarkMode) {
+			bmTimer->setInterval(50);
+			bmTimer->start();
+		}
+
+		threadHelper.start(jeu);
 
         dernierTemps = 0.0;
         dernierDecompte = 0l;
         chrono.start();
         _progress->setLabelText(trUtf8("Serching...\nWith %1 thread(s).").arg(threadHelper.nthr()));
-        showTimer->setInterval(900);
-        showTimer->start();
-        if (_benchmarkMode) {
-            bmTimer->setInterval(50);
-            bmTimer->start();
-        }
     }
 }
 
@@ -121,10 +122,10 @@ void Widget::stopEvent()
 
     ui->spinBox->setValue(1);
 
-    if(!_benchmarkMode && threadHelper.nbrall())
+	if(_benchmarkMode == 0 && threadHelper.nbrall() != 0)
         on_spinBox_valueChanged(1);
 
-    if(!_benchmarkMode && threadHelper.nbrall() == 0)
+	if(_benchmarkMode == 0 && threadHelper.nbrall() == 0)
         QMessageBox::information(this, trUtf8("Finished"), trUtf8("No solution found"));
     else if(!_benchmarkMode && _temps == 0)
         QMessageBox::information(this, trUtf8("Finished"), trUtf8("%L1 solution(s) found")
