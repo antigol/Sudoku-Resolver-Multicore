@@ -10,7 +10,8 @@ TEMPLATE = app
 DEPENDPATH += .
 INCLUDEPATH += .
 
-TARGET = Sudoku-Resolver-Multicore
+TARGET = SudokuResolver
+macx::TARGET = "Sudoku Resolver"
 
 # Input
 HEADERS += src/biglist.h \
@@ -36,3 +37,7 @@ SOURCES += src/main.cpp \
     src/sudokutables.cpp
 
 win32::RC_FILE += rsc/file.rc
+macx::ICON = rsc/red.icns
+
+CONFIG(release, debug|release):QMAKE_CXXFLAGS = -O3 -fomit-frame-pointer
+CONFIG(release, debug|release):QMAKE_CFLAGS_RELEASE = -O3 -fomit-frame-pointer
