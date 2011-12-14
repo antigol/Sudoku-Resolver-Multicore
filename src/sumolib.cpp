@@ -45,17 +45,20 @@ SudokuGame& SudokuGame::operator= (const SudokuGame& g)
 
 int SudokuGame::verification() const
 {
+    // Test si une case n'accepete aucun chiffre possible
     for(int i=0; i<81; ++i)
         if(_cases[i].digitAmount() == 0)
             return 0;
 
+    // Vérification validité de la grille
+    // Regarde si un element est à double dans sa ligne, colonne, carré
     for (int i=0; i<3; ++i) {
         for (int j=0; j<9; ++j) {
             for (int k=0; k<9; ++k) {
                 if (_cases[grille[i][j][k]].digitAmount() == 1) {
-                    const int numero = _cases[grille[i][j][k]].dataList();
+                    const int numero = _cases[grille[i][j][k]].mask();
                     for(int l=0; l<9; l++)
-                        if(l != k && _cases[grille[i][j][l]].dataList() == numero)
+                        if(l != k && _cases[grille[i][j][l]].mask() == numero)
                             return 0;
                 }
             }
@@ -65,42 +68,35 @@ int SudokuGame::verification() const
     return 1;
 }
 
-int SudokuGame::recherche()
+int SudokuGame::rechercheSolutionsTriviales()
 {
     int ok(0);
 
-    for(int i=0; i<3; ++i)
-    {
-        for(int j=0; j<9; ++j)
-        {
-            for(int k=0; k<9; ++k)
-            {
-                if(_cases[grille[i][j][k]].digitAmount() == 1)
-                {
-                    const int numero = _cases[grille[i][j][k]].dataList();
-                    for(int l=0; l<9; l++)
-                        if(l != k)
-                            if(_cases[grille[i][j][l]].removeDigit(numero))
+    // il prend un case fixée et enleve les chiffres dans sa ligne, colonne, carré.
+    for (int i=0; i<3; ++i) {
+        for (int j=0; j<9; ++j) {
+            for (int k=0; k<9; ++k) {
+                if (_cases[grille[i][j][k]].digitAmount() == 1) {
+                    const int numero = _cases[grille[i][j][k]].mask();
+                    for (int l=0; l<9; l++)
+                        if (l != k)
+                            if (_cases[grille[i][j][l]].removeDigit(numero))
                                 ok = 1;
                 }
             }
         }
     }
 
-    for(int chiffre=UN; chiffre<TOUS; chiffre<<=1)
-    {
-        for(int i=0; i<3; ++i)
-        {
-            for(int j=0; j<9; ++j)
-            {
+    for (int chiffre=UN; chiffre<TOUS; chiffre<<=1) {
+        for (int i=0; i<3; ++i) {
+            for (int j=0; j<9; ++j) {
                 int nbr_vus = 0;
                 int kk(0);
-                for(int k=0; k<9; ++k)
-                    if(_cases[grille[i][j][k]].dataList() & chiffre) { nbr_vus++; kk = k; }
+                for (int k=0; k<9; ++k)
+                    if(_cases[grille[i][j][k]].mask() & chiffre) { nbr_vus++; kk = k; }
                 if(nbr_vus == 1) // Si le chiffre apparait qu'une fois dans la ligne, colonne ou le carr alors
                 {
-                    if(_cases[grille[i][j][kk]].dataList() != chiffre)
-                    {
+                    if(_cases[grille[i][j][kk]].mask() != chiffre) {
                         ok = 1;
                         _cases[grille[i][j][kk]].setValue(chiffre); // il est attribu a la seul case qui peu le prendre
                     }
@@ -130,7 +126,7 @@ void SudokuData::setFromSudokuGame(const SudokuGame& g)
         if(g[i].digitAmount() == 1)
         {
             int x = 0;
-            while(g[i].dataList() ^ (1<<x++)) ;
+            while(g[i].mask() ^ (1<<x++)) ;
             setData(x, i);
         } else {
             setData(0, i);

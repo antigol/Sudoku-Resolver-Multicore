@@ -48,18 +48,15 @@ int SudokuThread::bruteforce(const SudokuGame &jeu/*, int lvl*/)
         return 0;
     }
 
-    SudokuGame copie(jeu);
+    SudokuGame copie = jeu;
 
-    for(register int chiffre=UN; chiffre<TOUS; chiffre<<=1)
-    {
-        if(copie[id].dataList() & chiffre)
-        {
+    for (register int chiffre=UN; chiffre<TOUS; chiffre<<=1) {
+        if (copie[id].mask() & chiffre) {
             copie[id].setValue(chiffre);
 
-            while(copie.recherche()) ;
+            while (copie.rechercheSolutionsTriviales()) ;
 
-            if(copie.verification())
-            {
+            if (copie.verification()) {
                 if(bruteforce(copie/*, lvl+1*/))
                     return 1;
             }

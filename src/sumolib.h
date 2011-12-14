@@ -26,7 +26,7 @@ public:
     int removeDigit(int f);
     void setValue(int f);
     int digitAmount() const { return _length; }
-    int dataList() const { return _digits; }
+    int mask() const { return _digits; }
     SudokuCase& operator= (const SudokuCase& c);
 private:
     int _digits;
@@ -43,7 +43,7 @@ public:
     SudokuCase operator[] (int i) const { return _cases[i]; }
     SudokuGame& operator= (const SudokuGame& g);
     int verification() const;
-    int recherche();
+    int rechercheSolutionsTriviales();
 private:
     SudokuCase  _cases[81];
 };

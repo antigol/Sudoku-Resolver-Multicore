@@ -106,7 +106,7 @@ QList<SudokuGame> ThreadHelper::decomposer(SudokuGame jeu)
     QList<SudokuGame> list;
     int maximum(0);
     int id(0);
-    while (jeu.recherche()) ; // ajout
+    while (jeu.rechercheSolutionsTriviales()) ; // ajout
     for (int i(0); i<81; ++i) {
         if (jeu[i].digitAmount() != 1 && jeu[i].digitAmount() > maximum) {
             maximum = jeu[i].digitAmount();
@@ -117,10 +117,10 @@ QList<SudokuGame> ThreadHelper::decomposer(SudokuGame jeu)
     SudokuGame save(jeu);
 
     for (int chiffre=UN; chiffre<TOUS; chiffre<<=1) {
-        if(jeu[id].dataList() & chiffre) {
+        if(jeu[id].mask() & chiffre) {
             jeu[id].setValue(chiffre);
 
-            while (jeu.recherche()) ;
+            while (jeu.rechercheSolutionsTriviales()) ;
 
             if (jeu.verification()) {
                 list.append(jeu);
