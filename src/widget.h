@@ -40,7 +40,7 @@ private:
   double dernierTemps;
   ulong dernierDecompte;
   unsigned int _benchmarkMode;
-  SumoData _sauvegarde;
+  SudokuData _sauvegarde;
   ThreadHelper threadHelper;
   SudokuWidget plateau;
   QNetworkAccessManager networkManager;

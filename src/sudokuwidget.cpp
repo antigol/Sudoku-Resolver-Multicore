@@ -27,15 +27,15 @@ SudokuWidget::SudokuWidget()
     setLayout(layout);
 }
 
-SumoData SudokuWidget::getGrille()
+SudokuData SudokuWidget::getGrille()
 {
-    SumoData data;
+    SudokuData data;
     for(int i=0; i<81; i++)
-        data.set((char)_cases[i]->intValue(), i);
+        data.setData((char)_cases[i]->intValue(), i);
     return data;
 }
 
-void SudokuWidget::setGrille(SumoData data)
+void SudokuWidget::setGrille(SudokuData data)
 {
     for(int i=0; i<81; i++)
         _cases[i]->display((int)data[i]);

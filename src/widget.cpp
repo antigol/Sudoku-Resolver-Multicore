@@ -35,10 +35,10 @@ Widget::~Widget()
 void Widget::on_pushButton_search_clicked()
 {
     plateau.setAllDisplayMode(SudokuCaseWidget::Edit);
-    SumoG jeu = plateau.getGrille().getG();
+    SudokuGame jeu = plateau.getGrille().toSudokuGame();
 
     if(ui->comboBox->currentIndex() != 0)
-        jeu = SumoG();
+        jeu = SudokuGame();
 
     if(!jeu.verification())
     {
@@ -90,7 +90,7 @@ void Widget::afficherNbr()
     if(threadHelper.nbrall() > threadHelper.nbrsave())
     {
         saveStatu = trUtf8("Saving halted ! (%1)").arg(toStrKMG(threadHelper.nbrsave()));
-        if(!_benchmarkMode) plateau.setGrille(SumoData());
+        if(!_benchmarkMode) plateau.setGrille(SudokuData());
     }
     else
     {
@@ -183,7 +183,7 @@ void Widget::sauvegarderLeScore()
 void Widget::on_spinBox_valueChanged(int index)
 {
     index--;
-    SumoData data = threadHelper.solAt(index);
+    SudokuData data = threadHelper.solAt(index);
     if(data[0] == 0)
         QMessageBox::information(this, trUtf8("Out of memory"), trUtf8("Data not found, the backup have been stopped at %1 input.").arg(toStrKMG(threadHelper.nbrsave())));
     else
@@ -203,12 +203,12 @@ void Widget::on_pushButton_restore_clicked()
 
 void Widget::on_pushButton_reset_clicked()
 {
-    plateau.setGrille(SumoData());
+    plateau.setGrille(SudokuData());
 }
 
 void Widget::on_comboBox_currentIndexChanged(int index)
 {
-    static SumoData sauvegarde;
+    static SudokuData sauvegarde;
     static bool was0 = true;
     switch(index) {
     case 0:
@@ -239,7 +239,7 @@ void Widget::on_comboBox_currentIndexChanged(int index)
     {
         if(was0) {
             sauvegarde = plateau.getGrille();
-            plateau.setGrille(SumoData());
+            plateau.setGrille(SudokuData());
             ui->pushButton_search->setText(trUtf8("Launch benchmark !"));
         }
         was0 = false;

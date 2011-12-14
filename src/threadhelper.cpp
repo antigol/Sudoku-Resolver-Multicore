@@ -8,7 +8,7 @@ ThreadHelper::ThreadHelper()
     _cpu = cpuThreads();
 }
 
-void ThreadHelper::start(SumoG jeu)
+void ThreadHelper::start(SudokuGame jeu)
 {
     reset();
     _jeux = decomposerEn(jeu, _cpu);
@@ -82,15 +82,15 @@ ulong ThreadHelper::nbrsave() const
     return nbr;
 }
 
-SumoData ThreadHelper::solAt(ulong i) const
+SudokuData ThreadHelper::solAt(ulong i) const
 {
     for(int k(0); k<_tlist.size(); ++k)
     {
-        const BigList<SumoData> &data(_tlist[k]->getSolutions());
+        const BigList<SudokuData> &data(_tlist[k]->getSolutions());
         if(i < data.size()) return data[i];
         i -= data.size();
     }
-    return SumoData();
+    return SudokuData();
 }
 
 int ThreadHelper::nthr() const
@@ -101,26 +101,26 @@ int ThreadHelper::nthr() const
     return nbr;
 }
 
-QList<SumoG> ThreadHelper::decomposer(SumoG jeu)
+QList<SudokuGame> ThreadHelper::decomposer(SudokuGame jeu)
 {
-    QList<SumoG> list;
+    QList<SudokuGame> list;
     int maximum(0);
     int id(0);
-    while (jeu.cherche()) ; // ajout
+    while (jeu.recherche()) ; // ajout
     for (int i(0); i<81; ++i) {
-        if (jeu[i].np() != 1 && jeu[i].np() > maximum) {
-            maximum = jeu[i].np();
+        if (jeu[i].digitAmount() != 1 && jeu[i].digitAmount() > maximum) {
+            maximum = jeu[i].digitAmount();
             id = i;
         }
     }
 
-    SumoG save(jeu);
+    SudokuGame save(jeu);
 
     for (int chiffre=UN; chiffre<TOUS; chiffre<<=1) {
-        if(jeu[id].list() & chiffre) {
-            jeu[id].set(chiffre);
+        if(jeu[id].dataList() & chiffre) {
+            jeu[id].setValue(chiffre);
 
-            while (jeu.cherche()) ;
+            while (jeu.recherche()) ;
 
             if (jeu.verification()) {
                 list.append(jeu);
@@ -132,13 +132,13 @@ QList<SumoG> ThreadHelper::decomposer(SumoG jeu)
     return list;
 }
 
-QList<SumoG> ThreadHelper::decomposerEn(SumoG jeu, int min)
+QList<SudokuGame> ThreadHelper::decomposerEn(SudokuGame jeu, int min)
 {
-    QList<SumoG> list(decomposer(jeu));
+    QList<SudokuGame> list(decomposer(jeu));
     if (list.size() <= 1) return list;
 
     while (list.size() < min) {
-        QList<QList<SumoG> > lists;
+        QList<QList<SudokuGame> > lists;
         for(int i(0); i<list.size(); ++i)
             lists.append(decomposer(list[i]));
 

@@ -8,12 +8,12 @@
 class SudokuThread : public QThread
 {
 public:
-  SudokuThread(QObject* parent, SumoG jeu);
+  SudokuThread(QObject* parent, SudokuGame jeu);
   virtual ~SudokuThread();
 
   int dejaRun() const;
 
-  const BigList<SumoData> & getSolutions() const {return _list;}
+  const BigList<SudokuData> & getSolutions() const {return _list;}
   unsigned long nbrSolutions() const {return _nbr;}
 
   void stop();
@@ -22,11 +22,11 @@ protected:
   virtual void run();
 
 private:
-  int bruteforce(const SumoG &jeu/*, int lvl = 0*/);
+  int bruteforce(const SudokuGame &jeu/*, int lvl = 0*/);
 
-  BigList<SumoData> _list;
+  BigList<SudokuData> _list;
   unsigned long _nbr;
-  SumoG _jeu;
+  SudokuGame _jeu;
   int _stop;
   int _dejaRun;
 };

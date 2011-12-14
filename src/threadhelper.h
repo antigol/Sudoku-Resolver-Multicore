@@ -17,24 +17,24 @@ public:
   int cpuThreads() const;
   ulong nbrall() const;
   ulong nbrsave() const;
-  SumoData solAt(ulong i) const;
+  SudokuData solAt(ulong i) const;
   int nthr() const;
   void reset();
   const QList<SudokuThread*> &tlist() const {return _tlist;}
 public slots:
-  void start(SumoG jeu);
+  void start(SudokuGame jeu);
   void stop();
 private slots:
   void endThread();
 private:
-  QList<SumoG> decomposer(SumoG jeu);
-  QList<SumoG> decomposerEn(SumoG jeu, int min);
+  QList<SudokuGame> decomposer(SudokuGame jeu);
+  QList<SudokuGame> decomposerEn(SudokuGame jeu, int min);
 signals:
   void finished();
 private:
   QList<SudokuThread*> _tlist;
   int _cpu;
-  QList<SumoG> _jeux;
+  QList<SudokuGame> _jeux;
   int _status;
 };
 

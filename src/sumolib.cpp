@@ -2,60 +2,60 @@
 #include "sudokutables.h"
 
 // SumoC
-SumoC::SumoC()
+SudokuCase::SudokuCase()
 {
-    _p = TOUS;
-    _np = 9;
+    _digits = TOUS;
+    _length = 9;
 }
 
-int SumoC::rmv(int f)
+int SudokuCase::removeDigit(int f)
 {
-    if (_p & f) {
-        _p &= ~f;
-        _np--;
+    if (_digits & f) {
+        _digits &= ~f;
+        _length--;
         return 1;
     }
     return 0;
 }
 
-void SumoC::set(int f)
+void SudokuCase::setValue(int f)
 {
-    _p = f;
-    _np = 1;
+    _digits = f;
+    _length = 1;
 }
 
-SumoC& SumoC::operator= (const SumoC& c)
-                        {
-    _p = c._p;
-    _np = c._np;
+SudokuCase& SudokuCase::operator= (const SudokuCase& c)
+{
+    _digits = c._digits;
+    _length = c._length;
     return *this;
 }
 
 // SumoG
-SumoG::SumoG(const SumoG& g)
+SudokuGame::SudokuGame(const SudokuGame& g)
 {
-    for (int i(0); i<81; ++i) _gr[i] = g[i];
+    for (int i(0); i<81; ++i) _cases[i] = g[i];
 }
 
-SumoG& SumoG::operator= (const SumoG& g)
-                        {
-    for (int i(0); i<81; ++i) _gr[i] = g[i];
+SudokuGame& SudokuGame::operator= (const SudokuGame& g)
+{
+    for (int i(0); i<81; ++i) _cases[i] = g[i];
     return *this;
 }
 
-int SumoG::verification() const
+int SudokuGame::verification() const
 {
     for(int i=0; i<81; ++i)
-        if(_gr[i].np() == 0)
+        if(_cases[i].digitAmount() == 0)
             return 0;
 
     for (int i=0; i<3; ++i) {
         for (int j=0; j<9; ++j) {
             for (int k=0; k<9; ++k) {
-                if (_gr[grille[i][j][k]].np() == 1) {
-                    const int numero = _gr[grille[i][j][k]].list();
+                if (_cases[grille[i][j][k]].digitAmount() == 1) {
+                    const int numero = _cases[grille[i][j][k]].dataList();
                     for(int l=0; l<9; l++)
-                        if(l != k && _gr[grille[i][j][l]].list() == numero)
+                        if(l != k && _cases[grille[i][j][l]].dataList() == numero)
                             return 0;
                 }
             }
@@ -65,7 +65,7 @@ int SumoG::verification() const
     return 1;
 }
 
-int SumoG::cherche()
+int SudokuGame::recherche()
 {
     int ok(0);
 
@@ -75,12 +75,12 @@ int SumoG::cherche()
         {
             for(int k=0; k<9; ++k)
             {
-                if(_gr[grille[i][j][k]].np() == 1)
+                if(_cases[grille[i][j][k]].digitAmount() == 1)
                 {
-                    const int numero = _gr[grille[i][j][k]].list();
+                    const int numero = _cases[grille[i][j][k]].dataList();
                     for(int l=0; l<9; l++)
                         if(l != k)
-                            if(_gr[grille[i][j][l]].rmv(numero))
+                            if(_cases[grille[i][j][l]].removeDigit(numero))
                                 ok = 1;
                 }
             }
@@ -96,13 +96,13 @@ int SumoG::cherche()
                 int nbr_vus = 0;
                 int kk(0);
                 for(int k=0; k<9; ++k)
-                    if(_gr[grille[i][j][k]].list() & chiffre) { nbr_vus++; kk = k; }
+                    if(_cases[grille[i][j][k]].dataList() & chiffre) { nbr_vus++; kk = k; }
                 if(nbr_vus == 1) // Si le chiffre apparait qu'une fois dans la ligne, colonne ou le carr alors
                 {
-                    if(_gr[grille[i][j][kk]].list() != chiffre)
+                    if(_cases[grille[i][j][kk]].dataList() != chiffre)
                     {
                         ok = 1;
-                        _gr[grille[i][j][kk]].set(chiffre); // il est attribu a la seul case qui peu le prendre
+                        _cases[grille[i][j][kk]].setValue(chiffre); // il est attribu a la seul case qui peu le prendre
                     }
                 }
             }
@@ -113,32 +113,32 @@ int SumoG::cherche()
 }
 
 // SumoData
-SumoData::SumoData()
+SudokuData::SudokuData()
 {
     for(int i(0); i<41; ++i) data[i] = 0;
 }
 
-SumoData::SumoData(const SumoG& g)
+SudokuData::SudokuData(const SudokuGame& g)
 {
-    set(g);
+    setFromSudokuGame(g);
 }
 
-void SumoData::set(const SumoG& g)
+void SudokuData::setFromSudokuGame(const SudokuGame& g)
 {
     for(int i(0); i<81; ++i)
     {
-        if(g[i].np() == 1)
+        if(g[i].digitAmount() == 1)
         {
             int x = 0;
-            while(g[i].list() ^ (1<<x++)) ;
-            set(x, i);
+            while(g[i].dataList() ^ (1<<x++)) ;
+            setData(x, i);
         } else {
-            set(0, i);
+            setData(0, i);
         }
     }
 }
 
-void SumoData::set(char x, int i)
+void SudokuData::setData(char x, int i)
 {
     int p = i/2;
     if(i%2) {
@@ -150,7 +150,7 @@ void SumoData::set(char x, int i)
     }
 }
 
-char SumoData::operator[] (int i) const
+char SudokuData::operator[] (int i) const
 {
     int p = i/2;
     if(i%2) {
@@ -160,15 +160,15 @@ char SumoData::operator[] (int i) const
     }
 }
 
-SumoG SumoData::getG()
+SudokuGame SudokuData::toSudokuGame()
 {
-    SumoG g;
+    SudokuGame g;
     for(int i(0); i<81; ++i)
     {
         char x = this->operator [](i);
         if(x)
         {
-            g[i].set(1<<(x-1));
+            g[i].setValue(1<<(x-1));
         }
     }
     return g;

@@ -1,6 +1,6 @@
 #include "sudokuthread.h"
 
-SudokuThread::SudokuThread(QObject* parent, SumoG jeu)
+SudokuThread::SudokuThread(QObject* parent, SudokuGame jeu)
     : QThread(parent), _nbr(0), _jeu(jeu), _stop(0), _dejaRun(0)
 {
 }
@@ -26,7 +26,7 @@ void SudokuThread::run()
     bruteforce(_jeu);
 }
 
-int SudokuThread::bruteforce(const SumoG &jeu/*, int lvl*/)
+int SudokuThread::bruteforce(const SudokuGame &jeu/*, int lvl*/)
 {
     if(_stop) return 1;
 
@@ -34,29 +34,29 @@ int SudokuThread::bruteforce(const SumoG &jeu/*, int lvl*/)
     register int id(0);
     for(register int i(0); i<81; ++i)
     {
-        if(jeu[i].np() != 1 && jeu[i].np() < minimum)
+        if(jeu[i].digitAmount() != 1 && jeu[i].digitAmount() < minimum)
         {
-            minimum = jeu[i].np();
+            minimum = jeu[i].digitAmount();
             id = i;
         }
     }
 
     if(minimum == 10)
     {
-        _list.append(SumoData(jeu));
+        _list.append(SudokuData(jeu));
         _nbr++;
         return 0;
     }
 
-    SumoG copie(jeu);
+    SudokuGame copie(jeu);
 
     for(register int chiffre=UN; chiffre<TOUS; chiffre<<=1)
     {
-        if(copie[id].list() & chiffre)
+        if(copie[id].dataList() & chiffre)
         {
-            copie[id].set(chiffre);
+            copie[id].setValue(chiffre);
 
-            while(copie.cherche()) ;
+            while(copie.recherche()) ;
 
             if(copie.verification())
             {

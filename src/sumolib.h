@@ -5,62 +5,62 @@
 //  ENUM CHIFFRES                    //
 ///////////////////////////////////////
 enum {
-  TOUS   = 0x1FF,
-  ZERO   = 0x0,
-  UN     = 0x1,
-  DEUX   = 0x2,
-  TROIS  = 0x4,
-  QUATRE = 0x8,
-  CINQ   = 0x10,
-  SIX    = 0x20,
-  SEPT   = 0x40,
-  HUIT   = 0x80,
-  NEUF   = 0x100
+    TOUS   = 0x01FF,
+    ZERO   = 0x0000,
+    UN     = 0x0001,
+    DEUX   = 0x0002,
+    TROIS  = 0x0004,
+    QUATRE = 0x0008,
+    CINQ   = 0x0010,
+    SIX    = 0x0020,
+    SEPT   = 0x0040,
+    HUIT   = 0x0080,
+    NEUF   = 0x0100
 };
 ///////////////////////////////////////
-//  SUMO C                           //
+//  Case du sudoku                   //
 ///////////////////////////////////////
-class SumoC {
+class SudokuCase {
 public:
-  SumoC();
-  int rmv(int f);
-  void set(int f);
-  int np() const { return _np; }
-  int list() const { return _p; }
-  SumoC& operator= (const SumoC& c);
+    SudokuCase();
+    int removeDigit(int f);
+    void setValue(int f);
+    int digitAmount() const { return _length; }
+    int dataList() const { return _digits; }
+    SudokuCase& operator= (const SudokuCase& c);
 private:
-  int _p;
-  int _np;
+    int _digits;
+    int _length;
 };
 ///////////////////////////////////////
-//  SUMO G                           //
+//  Une grille du jeu prette a être calculée //
 ///////////////////////////////////////
-class SumoG {
+class SudokuGame {
 public:
-  SumoG(){}
-  SumoG(const SumoG& g);
-  SumoC& operator[] (int i) { return _gr[i]; }
-  SumoC operator[] (int i) const { return _gr[i]; }
-  SumoG& operator= (const SumoG& g);
-  int verification() const;
-  int cherche();
+    SudokuGame() {}
+    SudokuGame(const SudokuGame& g);
+    SudokuCase& operator[] (int i) { return _cases[i]; }
+    SudokuCase operator[] (int i) const { return _cases[i]; }
+    SudokuGame& operator= (const SudokuGame& g);
+    int verification() const;
+    int recherche();
 private:
-  SumoC  _gr[81];
+    SudokuCase  _cases[81];
 };
 
 ///////////////////////////////////////
-//  SUMO DATA                        //
+//  Contient une grille de jeu en un minimum d'espace memoire //
 ///////////////////////////////////////
-class SumoData {
+class SudokuData {
 public:
-  SumoData();
-  SumoData(const SumoG& g);
-  void set(const SumoG& g);
-  void set(char x, int i);
-  char operator[] (int i) const;
-  SumoG getG();
+    SudokuData();
+    SudokuData(const SudokuGame& g);
+    void setFromSudokuGame(const SudokuGame& g);
+    void setData(char x, int i);
+    char operator[] (int i) const;
+    SudokuGame toSudokuGame();
 private:
-  unsigned char data[41];
+    unsigned char data[41];
 };
 
 #endif

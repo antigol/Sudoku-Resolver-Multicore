@@ -12,8 +12,8 @@ class SudokuWidget : public QWidget
   Q_OBJECT
 public:
   SudokuWidget();
-  SumoData getGrille();
-  void setGrille(SumoData data);
+  SudokuData getGrille();
+  void setGrille(SudokuData data);
   void setAllDisplayMode(SudokuCaseWidget::DisplayMode mode);
   void focusCentralCase();
 protected:
